@@ -1,0 +1,1309 @@
+import nltk
+import math
+import re
+
+
+RE_Operators = "(\++)|(-)|(=)|(\*)|(/)|(%)|(--)|(<=)|(>=)"
+
+RE_Numerals = "^(\d+)$|[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?"
+
+# [+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?
+RE_Identifiers = "^[a-zA-Z_]+[a-zA-Z0-9_]*"
+
+Identifiers_Output = []
+Operators_Output = []
+Numerals_Output = []
+# 
+
+
+def lexical(equation):
+    pp_i = 3.14
+    equation =equation.replace("pi", str(pp_i))
+    print("!! LEXICAL !!")
+    # pi = ['3.14']
+    # for i in equation:
+    #     if i.find('pi'):
+    #         string = equation.replace('pi', '3.14')
+    # print(string)
+
+    # for token in equation :
+    #   if(re.findall(RE_Operators , token)):
+
+    #     Operators_Output.append(token)
+
+    #   elif(re.findall(RE_Numerals,token)):
+
+    #     Numerals_Output.append(token)
+
+    #   elif (re.findall(RE_Identifiers, token)):
+    #     Identifiers_Output.append(token)
+    h = 0
+
+    o = 0
+
+    oo = 1
+    n = 0
+    r = 0
+    num = Numerals_Output[n]
+    op0 = Operators_Output[o]
+    ope = Operators_Output[oo]
+
+    for s in Identifiers_Output:
+        ol = 0
+        # p = 3.14 + " "
+        k = 'id' + str(h + 1) + " "
+        nn = Numerals_Output[0] + " "
+        OpR1 = Operators_Output[0] + " "
+        OpR2 = Operators_Output[1] + " "
+        
+
+        if len(Operators_Output) == 3 and len(Numerals_Output) == 2:
+            OpR3 = Operators_Output[2] + " "
+            equation = equation.replace(Operators_Output[2], OpR3)
+            NM2 = Numerals_Output[1] + " "
+            equation = equation.replace(Numerals_Output[1], NM2)
+
+        if len(Operators_Output) == 4 and len(Numerals_Output) == 3:
+            OpR3 = Operators_Output[3] + " "
+            equation = equation.replace(Operators_Output[3], OpR3)
+            NM2 = Numerals_Output[2] + " "
+            equation = equation.replace(Numerals_Output[2], NM2)
+
+        if len(Operators_Output) == 3:
+            OpR3 = Operators_Output[2] + " "
+            equation = equation.replace(Operators_Output[2], OpR3)
+
+        if len(Operators_Output) == 4:
+            OpR4 = Operators_Output[3] + " "
+            equation = equation.replace(Operators_Output[3], OpR4)
+
+        x = re.findall(RE_Identifiers, equation)
+        N = re.findall(RE_Numerals, equation)
+        OL = re.findall(RE_Operators, equation)
+        equation = equation.replace(Identifiers_Output[h], k)
+        equation = equation.replace(Numerals_Output[0], nn)
+        equation = equation.replace(Operators_Output[0], OpR1)
+        equation = equation.replace(Operators_Output[1], OpR2)
+        # equation = equation.replace(pi_output[0] , p)
+
+        h += 1
+        ol += 1
+    print(equation.replace(" ", ""))
+    # lst =  equation
+    # lllst =  lst.split()
+    # print(lllst)
+
+    # strr=equation.split()
+    # print(strr)
+
+print("         ")
+
+
+def syntax(equation):
+    print("         ")
+
+    print("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ")
+    # print(equation)
+    # llst=lexical(equation.llst)
+
+    lst = equation
+    llst = lst.split()
+    # print(llst [4])
+    h = 0
+    o = 0
+    oo = 1
+    n = 0
+    # equation = lexical.result
+    num = Numerals_Output[n]
+    op0 = Operators_Output[o]
+    ope = Operators_Output[oo]
+    print("!! Syntax TREE !!")
+    print("     id1")
+    print("     |    ")
+    if op0 == "=":
+        print("     " + op0)
+    if llst[4] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==1:
+      if llst[3] == '*' or '/' and llst[5] == '*' or '*':
+        h=2
+        print("        |    ")
+        print("        " + Operators_Output[2])
+        print("   /         \\")
+        print("id" + str(h) + "              " + Operators_Output[1])
+        print("           /         \\")
+        print("          " + "3.14" + "           " + Numerals_Output[0])
+      
+    if llst[2] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==0:
+      if llst[3] == '*' or '/' and llst[5] == '*' or '*':
+        h=2
+        print("        |    ")
+        print("        " + Operators_Output[2])
+        print("   /         \\")
+        print("3.14"  + "              " + Operators_Output[1])
+        print("           /         \\")
+        print("          " + "id" + str(h) + "           " + "id" + str(h))
+
+    # 2 operation
+    if len(Numerals_Output) == 2 and len(Operators_Output) == 3:
+        h = 2
+        # if llst[4] in Numerals_Output :
+
+        #   if llst[3] == '+' or '-'  and llst[5] == '*' or '/':
+        #     print("        |    ")
+        #     print("        "+Operators_Output[oo])
+        #     print("   /         \\")
+        #     print( "id" + str(h)  + "              "+Operators_Output[oo])
+        #     print("           /         \\")
+        #     print("          " + num + "           "+ "id" + str(h+1) )
+
+        if llst[2] in Numerals_Output:
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[2])
+                print("   /         \\")
+                print("id" + str(h) + "              " + Operators_Output[1])
+                print("           /         \\")
+                print("          " + Numerals_Output[0] + "           " + Numerals_Output[1])
+
+    if len(Numerals_Output) == 3 and len(Operators_Output) == 3:
+        h = 2
+        if llst[4] in Numerals_Output:
+
+            if llst[3] == '+' or '-' and llst[5] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[oo])
+                print("   /         \\")
+                print("id" + str(h) + "              " + Operators_Output[oo])
+                print("           /         \\")
+                print("          " + num + "           " + "id" + str(h + 1))
+
+        if llst[2] in Numerals_Output:
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[oo])
+                print("   /         \\")
+                print("id" + str(h + 1) + "              " + Operators_Output[oo])
+                print("           /         \\")
+                print("          " + num + "           " + "id" + str(h))
+
+            elif llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[oo + 1])
+
+                oo += 1
+                print("   /         \\")
+                print("   " + Operators_Output[oo - 1] + "          " + Operators_Output[oo + 1])
+                print("/     \\" + "       /    \\")
+                print("  id" + str(h - 2) + "   id" + str(h - 1) + "      " + "id" + str(h) + "     " + num)
+
+    if len(Operators_Output) == 3 and len(Numerals_Output) == 1:
+        h = 2
+        if llst[4] in Numerals_Output:
+            # if llst[3] == '+' or '-'  and llst[5] == '*' or '/':
+            print("        |    ")
+            print("        " + Operators_Output[1])
+            print("   /         \\")
+            print("id" + str(h) + "              " + Operators_Output[2])
+            print("           /         \\")
+            print("          " + num + "           " + "id" + str(h + 1))
+            
+
+        if llst[2] in Numerals_Output and llst[3] != "pi" and llst[3] != 3.14:
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[2])
+                print("   /         \\")
+                print("id" + str(h + 1) + "              " + Operators_Output[1])
+                print("           /         \\")
+                print("          " + num + "           " + "id" + str(h))
+                
+
+    # 3 operation
+    if len(Numerals_Output) == 2 and len(Operators_Output) == 4:
+        h = 3
+        # if llst[2] in Numerals_Output and  llst[4] in Numerals_Output:
+        if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+            print("        |    ")
+            print("        " + Operators_Output[2])
+            print("   /         \\")
+            print("   " + Operators_Output[1] + "          " + Operators_Output[3])
+            print("/     \\" + "       /    \\")
+            print("  id" + str(h - 1) + "   " + num + "      " + "id" + str(h) + "     " + Numerals_Output[1])
+            # +3*2+
+    #     if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' :
+    #       print("        |    ")
+    #       print("        "+Operators_Output[oo])
+
+    #       print("   /         \\")
+    #       print( "id" + str(h-2) + "              "+Operators_Output[oo+2])
+    #       print("           /         \\")
+    #       print("        id" + str(h) + "           "+Operators_Output[oo+1])
+    #       print("                    /         \\")
+    #       print("                     id" + str(h-1) + "        "+num)
+
+    # # y=b+3+o*h
+
+    #     if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :
+    #       print("        |    ")
+    #       print("        "+Operators_Output[oo])
+    #       print("   /         \\")
+    #       print("id" + str(h) + "              "+Operators_Output[oo])
+    #       print("           /         \\")
+    #       print("          " + num + "           "+Operators_Output[oo+2])
+    #       print("                    /         \\")
+    #       print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+
+    # y=b*3+o+h
+    # if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+    #   print("        |    ")
+    #   print("        "+Operators_Output[oo+1])
+    #   print("   /         \\")
+    #   print( "id" + str(h) + "              "+Operators_Output[oo+2])
+    #   print("           /         \\")
+    #   print("        id" + str(h-1) + "           "+Operators_Output[oo])
+
+    #   print("                    /         \\")
+    #   print("                     id" + str(h-2) + "        "+num)
+
+    if len(Numerals_Output) == 3 and len(Operators_Output) == 4:
+        ####v### id*3+2*6
+
+        if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+            h = 2
+            print("        |    ")
+            print("        " + Operators_Output[2])
+
+            oo += 1
+            print("   /         \\")
+            print("   " + Operators_Output[1] + "          " + Operators_Output[3])
+            print("/     \\" + "       /    \\")
+            print(
+                "id" + str(h) + "    " + Numerals_Output[0] + "      " + Numerals_Output[1] + "     " + Numerals_Output[
+                    2])
+
+        # elif llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' :
+        #   print("        |    ")
+        #   print("        "+Operators_Output[oo])
+
+        #   print("   /         \\")
+        #   print( "id" + str(h-2) + "              "+Operators_Output[oo+2])
+        #   print("           /         \\")
+        #   print("        id" + str(h) + "           "+Operators_Output[oo+1])
+        #   print("                    /         \\")
+        #   print("                     id" + str(h-1) + "        "+num)
+
+    # y=b+3+o*h
+
+    #     elif llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :
+    #       print("        |    ")
+    #       print("        "+Operators_Output[oo])
+    #       print("   /         \\")
+    #       print("id" + str(h) + "              "+Operators_Output[oo])
+    #       print("           /         \\")
+    #       print("          " + num + "           "+Operators_Output[oo+2])
+    #       print("                    /         \\")
+    #       print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+    # # y=b*3+o+h
+    #     elif llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+    #       print("        |    ")
+    #       print("        "+Operators_Output[oo+1])
+    #       print("   /         \\")
+    #       print( "id" + str(h) + "              "+Operators_Output[oo+2])
+    #       print("           /         \\")
+    #       print("        id" + str(h-1) + "           "+Operators_Output[oo])
+
+    #       print("                    /         \\")
+    #       print("                     id" + str(h-2) + "        "+num)
+
+    if len(Operators_Output) == 4 and len(Numerals_Output) == 1:
+        h = 4
+        # y=3*p+o*h
+        if llst[2] in Numerals_Output:
+
+            # y=3+p*o+h
+            if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[1])
+                print("   /         \\")
+                print(num + "              " + Operators_Output[3])
+                print("           /         \\")
+                print("        id" + str(h) + "           " + Operators_Output[2])
+                print("                    /         \\")
+                print("                     id" + str(h - 1) + "        " + "id" + str(h - 2))
+
+                #  y=3+o+p*h
+
+            if llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[1])
+                print("   /         \\")
+                print(num + "              " + Operators_Output[2])
+                print("           /         \\")
+                print("        id" + str(h) + "           " + Operators_Output[3])
+                print("                    /         \\")
+                print("                     id" + str(h - 1) + "        " + "id" + str(h - 2))
+
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[2])
+
+                oo += 1
+                print("   /         \\")
+                print("   " + Operators_Output[1] + "          " + Operators_Output[3])
+                print("/     \\" + "       /    \\")
+                print(num + " " + "  id" + str(h - 2) + "      id" + str(h - 1) + "     " + "id" + str(h))
+
+        if llst[4] in Numerals_Output:
+            h = 4
+
+            # y=b+5*o+h
+            if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[0])
+
+                print("   /         \\")
+                print("id" + str(h - 2) + "              " + Operators_Output[2])
+                print("           /         \\")
+                print("        id" + str(h) + "           " + Operators_Output[1])
+                print("                    /         \\")
+                print("                     id" + str(h - 1) + "        " + num)
+
+
+            # y=b+3+o*h
+
+            elif llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[oo])
+                print("   /         \\")
+                print("id" + str(h) + "              " + Operators_Output[oo])
+                print("           /         \\")
+                print("          " + num + "           " + Operators_Output[oo + 2])
+                print("                    /         \\")
+                print("                     id" + str(h - 1) + "        " + "id" + str(h - 2))
+            # y=b*3+o+h
+            elif llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[oo + 1])
+                print("   /         \\")
+                print("id" + str(h) + "              " + Operators_Output[oo + 2])
+                print("           /         \\")
+                print("        id" + str(h - 1) + "           " + Operators_Output[oo])
+
+                print("                    /         \\")
+                print("                     id" + str(h - 2) + "        " + num)
+
+        if llst[6] in Numerals_Output:
+            # y=b+o+3*h
+            if llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[0])
+                print("   /         \\")
+                print("id" + str(h - 2) + "              " + Operators_Output[1])
+                print("           /         \\")
+                print("        id" + str(h - 1) + "           " + Operators_Output[2])
+
+                print("                    /         \\")
+                print("                     id" + str(h) + "        " + num)
+
+            # y=b+o*3+h ########
+            # if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' :
+            #   print("lll")
+            # y=b*o+3+h
+            elif llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[oo])
+                print("   /         \\")
+                print("id" + str(h) + "              " + Operators_Output[oo])
+                print("           /         \\")
+                print("          " + num + "           " + Operators_Output[oo + 2])
+                print("                    /         \\")
+                print("                     id" + str(h - 1) + "        " + "id" + str(h - 2))
+
+        if llst[8] in Numerals_Output:
+            oo = 0
+            h = 4
+            # y=b+m+h*9
+            if llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[oo + 1])
+                print("   /         \\")
+                print("id" + str(h - 2) + "              " + Operators_Output[oo + 2])
+                print("           /         \\")
+                print("        id" + str(h - 1) + "           " + Operators_Output[oo])
+
+                print("                    /         \\")
+                print("                     id" + str(h) + "        " + num)
+
+            # y=b+m*h+9 ################
+            elif llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[oo])
+                print("   /         \\")
+                print("id" + str(h) + "              " + Operators_Output[oo])
+                print("           /         \\")
+                print("          " + num + "           " + Operators_Output[oo + 2])
+                print("                    /         \\")
+                print("                     id" + str(h - 1) + "        " + "id" + str(h - 2))
+
+            # y=b*m+h+9
+            elif llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[oo])
+                print("   /         \\")
+                print("id" + str(h) + "              " + Operators_Output[oo])
+                print("           /         \\")
+                print("          " + num + "           " + Operators_Output[oo + 2])
+                print("                    /         \\")
+                print("                     id" + str(h - 1) + "        " + "id" + str(h - 2))
+
+
+            elif llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+                print("        |    ")
+                print("        " + Operators_Output[oo + 1])
+
+                oo += 1
+                print("   /         \\")
+                print("   " + Operators_Output[oo - 1] + "          " + Operators_Output[oo + 1])
+                print("/     \\" + "       /    \\")
+                print("  id" + str(h - 2) + "   id" + str(h - 1) + "      " + "id" + str(h) + "     " + num)
+
+
+
+
+
+    # 1 operation
+    elif len(Operators_Output) == 2:
+        print("     |    ")
+        print("     " + ope)
+        print("    /  \\")
+        print("  " + "id" + str(h) + "    " + num)
+
+    print("")
+
+
+def sematic(equation):
+    print("         ")
+
+    print("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ")
+    lst = equation
+    llst = lst.split()
+    h = 0
+    o = 0
+    oo = 1
+    n = 0
+    num = Numerals_Output[n]
+    op0 = Operators_Output[o]
+    ope = Operators_Output[oo]
+    floats = list(map(float, Numerals_Output))
+    ff = floats[0]
+
+    print("!! SEMANTIC TREE !!")
+    print("     id1")
+    print("     |    ")
+    if op0 == "=":
+        print("     " + op0)
+
+    if llst[4] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==1:
+      if llst[3] == '*' or '/' and llst[5] == '*' or '*':
+        h=2
+        print("        |    ")
+        print("        " + Operators_Output[2])
+        print("   /         \\")
+        print("id" + str(h) + "              " + Operators_Output[1])
+        print("           /         \\")
+        print("          " + "3.14" + "           " + str(floats[0]))
+        print("                               " + "in to float")
+
+    if llst[2] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==0:
+      if llst[3] == '*' or '/' and llst[5] == '*' or '*':
+        h=2
+        print("        |    ")
+        print("        " + Operators_Output[2])
+        print("   /         \\")
+        print("3.14" + "              " + Operators_Output[1])
+        print("           /         \\")
+        print("          " + "id" + str(h) + "           " + "id" + str(h))
+        print("                               " + "in to float")
+    if len(Numerals_Output) == 1 and len(Operators_Output) == 3:
+
+        if llst[4] in Numerals_Output:
+            h = 2
+
+            # if llst[3] == '+' or '-'  and llst[5] == '*' or '/':
+            print("        |    ")
+            print("        " + Operators_Output[1])
+            print("   /         \\")
+            print("id" + str(h) + "              " + Operators_Output[2])
+            print("           /         \\")
+            print("          " + str(floats[0]) + "           " + "id" + str(h + 1))
+            print("         " + "in to float")
+
+        if llst[2] in Numerals_Output:
+            h = 2
+            # if llst[3] == '*' or '/'  and llst[5] == '+' or '-':
+            print("        |    ")
+            print("        " + Operators_Output[2])
+            print("   /         \\")
+            print("id" + str(h + 1) + "              " + Operators_Output[1])
+            print("           /         \\")
+            print("          " + str(floats[0]) + "           " + "id" + str(h))
+            print("         " + "in to float")
+
+    if len(Numerals_Output) == 2 and len(Operators_Output) == 3:
+        h = 2
+        # if llst[4] in Numerals_Output :
+
+        #   if llst[3] == '+' or '-'  and llst[5] == '*' or '/':
+        #     print("        |    ")
+        #     print("        "+Operators_Output[oo])
+        #     print("   /         \\")
+        #     print( "id" + str(h)  + "              "+Operators_Output[oo])
+        #     print("           /         \\")
+        #     floats = list(map(float,Numerals_Output ))
+        #     ff = floats[0]
+        #     print("          " + ff + "           "+ "id" + str(h+1) )
+        #     print("         "+ "in to float")
+
+        if llst[2] in Numerals_Output:
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-':
+                print("        |    ")
+                print("        " + Operators_Output[2])
+                print("   /         \\")
+                print("id" + str(h + 1) + "              " + Operators_Output[1])
+                print("           /         \\")
+                floats = list(map(float, Numerals_Output))
+                float2 = list(map(float, Numerals_Output))
+                ff = floats[0]
+                fff = float2[0]
+                print("          " + str(floats[0]) + "           " + str(floats[1]))
+                print("          " + "in to float" + "           " + "in to float")
+
+    if len(Numerals_Output) == 2 and len(Operators_Output) == 4:
+
+        #   # +3*2+
+        #     if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' :
+        #       print("        |    ")
+        #       print("        "+Operators_Output[oo])
+
+        #       print("   /         \\")
+        #       print( "id" + str(h-2) + "              "+Operators_Output[oo+2])
+        #       print("           /         \\")
+        #       print("        id" + str(h) + "           "+Operators_Output[oo+1])
+        #       print("                    /         \\")
+        #       floats = list(map(float,Numerals_Output ))
+        #       ff = floats[0]
+        #       print("                     id" + str(h-1) + "        "+ ff)
+        #       print("                              "+ "in to float")
+
+        # # y=b+3+o*h
+
+        #     elif llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :
+        #       print("        |    ")
+        #       print("        "+Operators_Output[oo])
+        #       print("   /         \\")
+        #       print("id" + str(h) + "              "+Operators_Output[oo])
+        #       print("           /         \\")
+        #       floats = list(map(float,Numerals_Output ))
+        #       ff = floats[0]
+        #       print("          " + ff + "           "+Operators_Output[oo+2])
+        #       print("          "+ "in to float")
+
+        #       print("                    /         \\")
+        #       print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+
+        # # y=b*3+o+h
+        #     if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+        #       print("        |    ")
+        #       print("        "+Operators_Output[oo+1])
+        #       print("   /         \\")
+        #       print( "id" + str(h) + "              "+Operators_Output[oo+2])
+        #       print("           /         \\")
+        #       print("        id" + str(h-1) + "           "+Operators_Output[oo])
+
+        #       print("                    /         \\")
+        #       floats = list(map(float,Numerals_Output ))
+        #       ff = floats[0]
+        #       print("                     id" + str(h-2) + "        "+ff)
+        #       print("                      "+ "in to float")
+
+        if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+            h = 2
+            print("        |    ")
+            print("        " + Operators_Output[2])
+
+            oo += 1
+            print("   /         \\")
+            print("   " + Operators_Output[1] + "          " + Operators_Output[3])
+            print("/     \\" + "       /    \\")
+            floats = list(map(float, Numerals_Output))
+            ff = floats[0]
+            print(
+                "  id" + str(h + 1) + "   " + str(floats[0]) + "      " + "id" + str(h) + "     " +str(floats[1]))
+            print("          " + "in to float" + "              " + "in to float")
+
+        #   if len(Numerals_Output) == 3 and len(Operators_Output) ==  3 :
+    #     h=2
+    #     if llst[4] in Numerals_Output :
+
+    #       if llst[3] == '+' or '-'  and llst[5] == '*' or '/':
+    #         print("        |    ")
+    #         print("        "+Operators_Output[oo])
+    #         print("   /         \\")
+    #         print( "id" + str(h)  + "              "+Operators_Output[oo])
+    #         print("           /         \\")
+    #         floats = list(map(float,Numerals_Output ))
+    #         ff = floats[0]
+    #         print("          " + ff + "           "+ "id" + str(h+1) )
+    #         print("          "+ "in to float")
+
+    #     if llst[2] in Numerals_Output :
+    #       if llst[3] == '*' or '/'  and llst[5] == '+' or '-':
+    #         print("        |    ")
+    #         print("        "+Operators_Output[oo])
+    #         print("   /         \\")
+    #         print( "id" + str(h+1)  + "              "+Operators_Output[oo])
+    #         print("           /         \\")
+    #         floats = list(map(float,Numerals_Output ))
+    #         ff = floats[0]
+    #         print("          " + ff  + "           "+ "id" + str(h) )
+    #         print("                "+ "in to float")
+
+    #       elif llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+    #         print("        |    ")
+    #         print("        "+Operators_Output[oo+1])
+
+    #         oo+=1
+    #         print("   /         \\")
+    #         print("   "+Operators_Output[oo-1] +"          "+Operators_Output[oo+1])
+    #         print("/     \\" + "       /    \\")
+    #         floats = list(map(float,Numerals_Output ))
+    #         ff = floats[0]
+    #         print("  id" + str(h-2) + "   id" + str(h-1) + "      " + "id" + str(h) + "     " + ff)
+    #         print("                "+ "in to float")
+
+    if len(Numerals_Output) == 3 and len(Operators_Output) == 4:
+        #     ####v### id*3+2*6
+
+        if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+            h = 2
+            print("        |    ")
+            print("        " + Operators_Output[2])
+
+            oo += 1
+            print("   /         \\")
+            print("   " + Operators_Output[1] + "          " + Operators_Output[3])
+            print("/     \\" + "       /    \\")
+            floats = list(map(float, Numerals_Output))
+            ff = floats[0]
+            print(
+                "id" + str(h) + "   " + str(floats[0]) + "      " + str(floats[1]) + "     " + str(floats[2]))
+            print("     " + "in to float" + "           " + "in to float" + "                " + "in to float")
+
+
+
+    
+
+
+    if len(Operators_Output) == 4 and len(Numerals_Output) == 1 :
+      oo = 0
+    # y=3*p+o*h
+      if llst[2] in Numerals_Output :
+        if llst[3] == '*' or '/'  and llst[5] == '+' or '-':
+          print("        |    ")
+          print("        "+Operators_Output[oo+1])
+
+          oo+=1
+          print("   /         \\")
+          print("   "+Operators_Output[oo-1] +"          "+Operators_Output[oo+1])
+          print("/     \\" + "       /    \\")
+          floats = list(map(float,Numerals_Output ))
+          ff = floats[0]
+          print( str(ff) + " " + "  id" + str(h-2) + "      id" + str(h-1) + "     " + "id" + str(h) )
+          print(""+ "in to float")
+
+
+# y=3+p*o+h
+        if llst[3] == '+' or '-' and llst[5] == '*' or '/' :
+          print("        |    ")
+          print("        "+Operators_Output[oo])
+          print("   /         \\")
+          floats = list(map(float,Numerals_Output ))
+          ff = floats[0]
+          print( str(ff) + "              "+Operators_Output[oo])
+          print(""+ "in to float")
+          print("           /         \\")
+          print("        id" + str(h) + "           "+Operators_Output[oo+1])
+          print("                    /         \\")
+          print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+
+#  y=3+o+p*h
+
+        if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :
+          print("        |    ")
+          print("        "+Operators_Output[oo])
+          print("   /         \\")
+          floats = list(map(float,Numerals_Output ))
+          ff = floats[0]
+          print( str(ff) + "              "+Operators_Output[oo])
+          print(""+ "in to float")
+          print("           /         \\")
+          print("        id" + str(h) + "           "+Operators_Output[oo+2])
+          print("                    /         \\")
+          print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+      if llst[6] in Numerals_Output :
+        oo=1
+        h=1
+
+# y=b+o+3*h
+        if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :
+          print("        |    ")
+          print("        "+Operators_Output[oo+1])
+          print("   /         \\")
+          print( "id" + str(h-2) + "              "+Operators_Output[oo+2])
+          print("           /         \\")
+          print("        id" + str(h-1) + "           "+Operators_Output[oo])
+          print("                    /         \\")
+          floats = list(map(float,Numerals_Output ))
+          ff = floats[0]
+          print("                     id" + str(h) + "        "+str(ff))
+          print("                            "+ "in to float")
+
+# y=b+o*3+h########
+      # if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' :
+      #   print("lll")
+            # y=b*o+3+h
+        if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+          print("        |    ")
+          print("        "+Operators_Output[oo])
+          print("   /         \\")
+          print( "id" + str(h)  + "              "+Operators_Output[oo])
+          print("           /         \\")
+          floats = list(map(float,Numerals_Output ))
+          ff = floats[0]
+          print("          " + str(ff) + "           "+Operators_Output[oo+2])
+          print("        "+ "in to float")
+          print("                    /         \\")
+          print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+      if llst[8] in Numerals_Output :
+# y=b+m+h*9
+        if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :
+          print("        |    ")
+          print("        "+Operators_Output[oo+1])
+          print("   /         \\")
+          print( "id" + str(h-2) + "              "+Operators_Output[oo+2])
+          print("           /         \\")
+          print("        id" + str(h-1) + "           "+Operators_Output[oo])
+          print("                    /         \\")
+          floats = list(map(float,Numerals_Output ))
+          ff = floats[0]
+          print("                     id" + str(h) + "        "+str(ff))
+          print("                                       "+ "in to float")
+
+# y=b+m*h+9 ################
+      # if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' :
+      #   print("        |    ")
+      #   print("        "+Operators_Output[oo])
+      #   print("   /         \\")
+      #   print( "id" + str(h)  + "              "+Operators_Output[oo])
+      #   print("           /         \\")
+      #   print("          " + num + "           "+Operators_Output[oo+2])
+      #   print("                    /         \\")
+      #   print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+
+      # y=b*m+h+9
+        elif llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+          print("        |    ")
+          print("        "+Operators_Output[oo])
+          print("   /         \\")
+          print( "id" + str(h)  + "              "+Operators_Output[oo])
+          print("           /         \\")
+          floats = list(map(float,Numerals_Output ))
+          ff = floats[0]
+          print("          " + str(ff) + "           "+Operators_Output[oo+2])
+          print("        "+ "in to float")
+          print("                    /         \\")
+          print("                     id" + str(h-1) + "        "+"id" + str(h-2))
+
+#   if len(Operators_Output) == 3:
+#     h=2
+#     if llst[4] in Numerals_Output :
+
+#       print("        |    ")
+#       print("        "+Operators_Output[oo])
+#       print("   /         \\")
+#       print( "id" + str(h)  + "              "+Operators_Output[oo])
+#       print("           /         \\")
+#       floats = list(map(float,Numerals_Output ))
+#       ff = floats[0]
+#       print("          " + str(ff)  + "           "+ "id" + str(h+1) )
+
+#       print("        "+ "in to float")
+
+
+#     if llst[2] in Numerals_Output :
+#       if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+#         print("        |    ")
+#         print("        "+Operators_Output[oo])
+#         print("   /         \\")
+#         print( "id" + str(h+1)  + "              "+Operators_Output[oo])
+#         print("           /         \\")
+#         floats = list(map(float,Numerals_Output ))
+#         ff = floats[0]
+#         print("          " + str(ff)  + "           "+ "id" + str(h) )
+
+#         print("        "+ "in to float")
+
+
+def ICG(equation):
+  print("         ")
+
+  print("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ")
+  print("!!!!ICG!!!!")
+  lst = equation
+  llst = lst.split()
+
+  floats = list(map(float, Numerals_Output))
+  ff = floats[0]
+  if llst[4] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==1:
+    if llst[3] == '*' or '/' and llst[5] == '*' or '*':
+        h=2
+        print("t1 =" + "in to float" + "(" + str(floats[0]) + ")")
+        print("t2 = " + "t1" +  Operators_Output[1] + "3.14")
+        print("t3 = " + "id" + str(h) + Operators_Output[2] + "t2" )
+        print("id" + str(h -1) + "=" + "t3") 
+
+    if llst[2] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==0:
+      if llst[3] == '*' or '/' and llst[5] == '*' or '*':
+        h=2
+        print("t1 = " +"id" + str(h)  +  Operators_Output[1] + "id" + str(h) )
+        print("t2 = " +"3.14" + Operators_Output[2] + "t1" )
+        print("id" + str(h -1) + "=" + "t1") 
+
+
+  if len(Numerals_Output) == 3 and len(Operators_Output) == 4:
+    if llst[4] in Numerals_Output:
+      h = 2
+      if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+        print("t1 =" + "in to float" + "(" + str(floats[0]) + ")")
+        print("t2 =" + "in to float" + "(" + str(floats[1]) + ")")
+        print("t3 =" + "in to float" + "(" + str(floats[2]) + ")")
+        print("t4 = " + "t1" +  Operators_Output[1] + "t2")
+        print("t5 = " + "id" + str(h) + Operators_Output[3] + "t3" )
+        print("t6 = " + "t4" + Operators_Output[2] + "t5")
+        print("id" + str(h -1) + "=" + "t6")      
+  if len(Numerals_Output) == 2 and len(Operators_Output) == 4:
+    if llst[2] in Numerals_Output:
+      h = 3
+      if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+        print("t1 =" + "in to float" + "(" + str(floats[0]) + ")")
+        print("t2 =" + "in to float" + "(" + str(floats[1]) + ")")
+        print("t3 = " + "t1" +  Operators_Output[1] + "id" + str(h-1))
+        print("t4 = " + "t2" +  Operators_Output[3] + "id" + str(h))
+        print("t5 = " + "t4" + Operators_Output[2] + "t3")
+        print("id" + str(h -1) + "=" + "t5")   
+
+
+  if len(Numerals_Output) == 1 and len(Operators_Output) == 3:  
+    if llst[2] in Numerals_Output:
+      h = 3
+      if llst[3] == '*' or '/' and llst[5] == '+' or '-' :
+        print("t1 =" + "in to float" + "(" + str(floats[0]) + ")")
+        print("t2 = " + "t1" +  Operators_Output[1] + "id" + str(h-1))
+        print("t3 = " + "t2" +  Operators_Output[2] + "id" + str(h))
+        print("id" + str(h -1) + "=" + "t3")   
+    if llst[4] in Numerals_Output:
+      h = 3
+      if llst[3] == '+' or '-' and llst[5] == '*' or '/':
+        print("t1 =" + "in to float" + "(" + str(floats[0]) + ")")
+        print("t2 = " + "t1" +  Operators_Output[1] + "id" + str(h))
+        print("t3 = " + "t2" +  Operators_Output[2] + "id" + str(h-1))
+        print("id" + str(h -1) + "=" + "t3")                      
+    if len(Operators_Output) == 4 and len(Numerals_Output) == 1:
+
+        if llst[2] in Numerals_Output:
+            h = 4
+            # y=5+z*o+b
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 2) + Operators_Output[3] + "t1")
+                print("t3 = " + "id" + str(h) + Operators_Output[2] + "id" + str(h - 1))
+                print("t4 = " + "t2" + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+                # y=3+p*o+h
+            if llst[3] == '+' or '-' and llst[5] == '*' or '/':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 2) + Operators_Output[3] + str(h - 1))
+                print("t3 = " + "id" + str(h) + Operators_Output[2] + "t2")
+                print("t4 = " + "t1" + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+
+            #  y=3+o+p*h
+            if llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 1) + Operators_Output[3] + str(h))
+                print("t3 = " + "id" + str(h - 2) + Operators_Output[2] + "t2")
+                print("t4 = " + "t1" + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+
+
+
+
+
+
+        elif llst[4] in Numerals_Output:
+            h = 4
+            # y=b+5*o+h
+            if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 1) + Operators_Output[3] + 't1')
+                print("t3 = " + "id" + str(h) + Operators_Output[2] + "t2")
+                print("t4 = " + "id" + str(h - 2) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+
+            # y=b+3+o*h
+
+            if llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 1) + Operators_Output[3] + "id" + str(h))
+                print("t3 = " + 't1' + Operators_Output[2] + "t2")
+                print("t4 = " + "id" + str(h - 2) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+                # y=b*3+o+h
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 2) + Operators_Output[3] + 't1')
+                print("t3 = " + "id" + str(h - 1) + Operators_Output[2] + "t2")
+                print("t4 = " + "id" + str(h) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+
+
+
+
+
+
+
+        elif llst[6] in Numerals_Output:
+            h = 4
+            # y=b+o+3*h
+            if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 1) + Operators_Output[3] + 't1')
+                print("t3 = " + "id" + str(h) + Operators_Output[2] + "t2")
+                print("t4 = " + "id" + str(h - 2) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+                # y=b*o+3+h
+            if llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 1) + Operators_Output[3] + str(h - 2))
+                print("t3 = " + 't2' + Operators_Output[2] + "t1")
+                print("t4 = " + "id" + str(h) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h) + Operators_Output[3] + 't1')
+                print("t3 = " + 't2' + Operators_Output[2] + "id" + str(h - 1))
+                print("t4 = " + "id" + str(h - 2) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+
+        elif llst[8] in Numerals_Output:
+            h = 4
+            if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h) + Operators_Output[3] + "id" + str(h - 1))
+                print("t3 = " + 't2' + Operators_Output[2] + 't1')
+                print("t4 = " + "id" + str(h - 2) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+            if llst[3] == '+' or '-' and llst[5] == '+' or '+' and llst[7] == '*' or '/':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h - 2) + Operators_Output[3] + "id" + str(h - 1))
+                print("t3 = " + 't2' + Operators_Output[2] + 't1')
+                print("t4 = " + "id" + str(h) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+            if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+                print("t1 =" + "in to float" + "(" + str(ff) + ")")
+                print("t2 = " + "id" + str(h) + Operators_Output[3] + "t1")
+                print("t3 = " + "id" + str(h - 1) + Operators_Output[2] + 't2')
+                print("t4 = " + "id" + str(h - 2) + Operators_Output[1] + "t3")
+                print("id" + str(h - 3) + "=" + "t4")
+    # if len(Operators_Output) == 3 and len(Numerals_Output)==1:
+    #     h = 3
+    #     if llst[4] in Numerals_Output:
+    #         if llst[3] == '+' or '-' and llst[5] == '*' or '/':
+    #             print("t1 =" + "in to float" + "(" + str(ff) + ")")
+    #             print("t2 = " + "id" + str(h) + Operators_Output[2] + "t1")
+    #             print('t3' + "=" + 't1' + Operators_Output[1] + "id" + str(h - 1))
+    #             print("id" + str(h - 2) + "=" + "t3")
+
+    #     if llst[2] in Numerals_Output:
+    #         if llst[3] == '*' or '/' and llst[5] == '+' or '-':
+    #             print("t1 =" + "in to float" + "(" + str(ff) + ")")
+    #             print("t2 = " + "id" + str(h - 1) + Operators_Output[1] + 't1')
+    #             print('t3' + "=" + 't1' + Operators_Output[2] + "id" + str(h))
+    #             print("id" + str(h - 2) + "=" + "t3")
+
+
+
+
+def optimizer(equation):
+  print("         ")
+
+  print("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ")
+
+  print("Optimizer")
+  lst = equation
+  llst = lst.split()
+  floats = list(map(float, Numerals_Output))
+  ff = floats[0]
+
+  if llst[4] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==1:
+    if llst[3] == '*' or '/' and llst[5] == '*' or '*':
+        h=2
+        print("t1 =" +  "#"+str(Numerals_Output[0]) +Operators_Output[1] + "3.14")
+        print("id" + str(h -1) + "=" + "id" + str(h) + Operators_Output[2] + "t1" )
+    if llst[2] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==0:
+      if llst[3] == '*' or '/' and llst[5] == '*' or '*':       
+        h=2
+        print("t1 = " +"id" + str(h)  +  Operators_Output[1] + "id" + str(h) )
+        print("id" + str(h -1) + "=" +"3.14" + Operators_Output[2] + "t1" )
+        
+
+
+  if len(Numerals_Output) == 3 and len(Operators_Output) == 4:
+    if llst[4] in Numerals_Output:
+      h = 2
+      if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+        print("t1 =" + "#"+str(floats[0]) +  Operators_Output[1] +"#"+str(floats[1]) )
+        print("t2 =" + "id" + str(h) +Operators_Output[3]+"#"+str(floats[0]))
+        print("id" + str(h -1) + "=" + "t1" + Operators_Output[2] + "t2")
+    
+  if len(Numerals_Output) == 2 and len(Operators_Output) == 4:
+    if llst[2] in Numerals_Output:
+      h = 3
+      if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+        print("t1 ="+ "id" + str(h-1) + Operators_Output[1]  + "#"+str(floats[0]) )
+        print("t2 =" +"id" + str(h)+ Operators_Output[3] +"#"+str(floats[1]))
+        print("id" + str(h -1) + "="  + "t1" + Operators_Output[2] + "t2")
+           
+
+
+  if len(Numerals_Output) == 1 and len(Operators_Output) == 3:  
+    if llst[2] in Numerals_Output:
+      h = 3
+      
+      if llst[3] == '*' or '/' and llst[5] == '+' or '-':
+        print("t1 ="+ "id" + str(h-1) + Operators_Output[1]  + "#"+str(floats[0]) )
+        print("id" + str(h -2) + "="  + 'id2'+str(h)+ Operators_Output[2] +"t1")
+
+           
+    if llst[4] in Numerals_Output:
+      h = 3
+      if llst[3] == '+' or '-' and llst[5] == '*' or '/':
+        print("t1 ="+ "id" + str(h) + Operators_Output[1]  + "#"+str(floats[0]) )
+        print("id" + str(h -1) + "="  + 'id2' + str(h-1)+ Operators_Output[2] +"t1")                     
+
+
+
+  if len(Operators_Output) == 4 and len(Numerals_Output)==1: 
+           
+    
+    if llst[2] in Numerals_Output :
+      h=4
+        # y=5+z*o+b 
+      if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+          print("t1 = " + "id"+ str(h-2) +Operators_Output[3] + str(ff) )
+          print("t2 = " + "id"+ str(h) + Operators_Output[2]+ "id"+   str(h-1) )
+          print("id"+ str(h-3)  + "="+"t1" + Operators_Output[1]+ "t2")
+          
+            # y=3+p*o+h
+      if llst[3] == '+' or '-' and llst[5] == '*' or '/' :
+
+          print("t1 = " + "id"+str(h-2) +Operators_Output[3] + str(h-1) )
+          print("t2 = " + "id"+str(h) + Operators_Output[2]+ "t2")
+          print("id"+str(h-3) + "="+str(ff) + Operators_Output[1]+ "t3")
+        
+
+  #  y=3+o+p*h   
+      if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :
+
+          print("t1 = " + "id"+str(h-1) +Operators_Output[3] + str(h) )
+          print("t2 = " + "id"+str(h-2) + Operators_Output[2]+ "t1")
+          print("id"+str(h-3) + "="+str(ff) + Operators_Output[1]+ "t2")
+          
+
+
+
+
+          
+               
+    elif llst[4] in Numerals_Output :
+      h=4
+          # y=b+5*o+h
+      if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' : 
+
+          print("t1 = " + "id"+str(h-1) +Operators_Output[3] + str(ff) )
+          print("t2 = " + "id"+str(h) + Operators_Output[2]+ "t1")
+          print("id"+str(h-3) + "=" +"id"+str(h-2) + Operators_Output[1]+ "t2")
+          
+
+
+
+        # y=b+3+o*h
+
+      if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' : 
+
+          print("t1 = " + "id"+str(h-1) +Operators_Output[3] + "id"+str(h) )
+          print("t2 = " + str(ff) + Operators_Output[2]+ "t1")
+          print("id"+str(h-3) + "="+"id"+str(h-2) + Operators_Output[1]+ "t2")
+          
+            # y=b*3+o+h
+      if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+
+          print("t1 = " + "id"+str(h-2) +Operators_Output[3] + str(ff) )
+          print("t2 = " + "id"+str(h-1) + Operators_Output[2]+ "t1")
+          print("id"+str(h-3) + "="+"id"+str(h) + Operators_Output[1]+ "t2")
+          
+
+
+
+
+
+
+
+    elif llst[6] in Numerals_Output :
+      h=4 
+      # y=b+o+3*h
+      if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' : 
+ 
+          print("t1 = " + "id"+str(h) +Operators_Output[3] + str(ff))
+          print("t2 = " + "id"+str(h-1) + Operators_Output[2]+ "t1")
+          print("id"+str(h-3) + "=" + "id"+str(h-2) + Operators_Output[1]+ "t2")
+             
+            # y=b*o+3+h
+      if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' : 
+
+          print("t1 = " + "id"+str(h-1) +Operators_Output[3] + str(h-2) )
+          print("t2 = " + 't1' + Operators_Output[2]+ str(ff))
+          print("id"+str(h-3) + "="+"id"+str(h) + Operators_Output[1]+ "t2")
+           
+      if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-':
+
+          print("t1 = " + "id"+str(h) +Operators_Output[3] + str(ff) )
+          print("t3 = " + 't1' + Operators_Output[2]+ "id"+str(h-1))
+          print("id"+str(h-3) + "="+"id"+str(h-2) + Operators_Output[1]+ "t2")
+                            
+
+    elif llst[8] in Numerals_Output :
+      h=4
+      if llst[3] == '+' or '-' and llst[5] == '*' or '/' and llst[7] == '+' or '-' : 
+
+          print("t1 = " + "id"+str(h) +Operators_Output[3] + "id"+str(h-1))
+          print("t2 = " + 't1' + Operators_Output[2]+ str(ff))
+          print("id"+str(h-3) + "="+"id"+str(h-2) + Operators_Output[1]+ "t2")
+          
+      if llst[3] == '+' or '-' and llst[5] == '+' or '+'and llst[7] == '*' or '/' :  
+
+          print("t1 = " + "id"+str(h-2) +Operators_Output[3] + "id"+str(h-1))
+          print("t2 = " + 't1' + Operators_Output[2]+ str(ff))
+          print("id"+str(h-3) + "="+"id"+str(h) + Operators_Output[1]+ "t2")
+                                
+      if llst[3] == '*' or '/'  and llst[5] == '+' or '-' and llst[7] == '+' or '-': 
+ 
+          print("t1 = " + "id"+str(h) +Operators_Output[3] + str(ff))
+          print("t2 = " + "id"+str(h-1) + Operators_Output[2]+'t1' )
+          print("id"+str(h-3) + "=" + "id"+str(h-2) + Operators_Output[1]+ "t2")
+             
+
+  # if len(Operators_Output) == 3 and len(Numerals_Output)==1:
+  #   h=3
+  #   if llst[4] in Numerals_Output :
+  #     if llst[3] == '+' or '-' and llst[5] == '*' or '/' : 
+
+  #         print("t1 = " + "id"+str(h) +Operators_Output[2] + str(ff) )
+  #         print("id"+str(h-3)  + "="+'t1' + Operators_Output[1]+"id"+str(h-1))
+    
+  #   if llst[2] in Numerals_Output :
+  #     if llst[3] == '*' or '/'  and llst[5] == '+' or '-': 
+  #         print("t1 = " + "id"+str(h-1) +Operators_Output[1] + str(ff) )
+  #         print("id"+str(h-3)  + "="+'t1' + Operators_Output[2]+"id"+str(h)) 
+
+
+
+
+def code_Generation(equation):
+  print("         ")
+
+  print("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ")
+  print("!!!CODE_GENERATION!!!")
+
+
+  lst = equation
+  llst = lst.split()
+  floats = list(map(float, Numerals_Output))
+  ff = floats[0]
+  if llst[4] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==1:
+    if llst[3] == '*' or '/' and llst[5] == '*' or '*': 
+      print("LDF ," + "R1," + 'id2,')
+      print("MLTF," + "R1," + "R1," + "#"+str(floats[0]))
+      print("MLTF," + "R1," + "R1," + "3.14")  
+      print("STRF, "+ "id1," + "R1" )  
+  if llst[2] == "pi" and len(Operators_Output)==3 and len(Numerals_Output)==0:
+    if llst[3] == '*' or '/' and llst[5] == '*' or '*': 
+      print("LDF ," + "R1," + 'id2,')
+      print("MLTF," + "R1," + "R1," +'R1')
+      print("MLTF," + "R1," + "R1," + "3.14")  
+      print("STRF, "+ "id1," + "R1" ) 
+
+  if len(Numerals_Output) == 2 and len(Operators_Output) == 4:
+    if llst[2] in Numerals_Output:
+      h = 2
+      
+      # if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+      print("LDF ," + "R2," + 'id3,')
+      print("MLTF," + "R2," + "R2," + "#"+str(floats[0]))
+      print("LDF ," + "R1," + 'id2,')
+      print("MLTF," + "R1," + "R1," + "#"+str(floats[1]))
+      print("ADDF," + "R1," + "R1 ," + "R2")
+      print("STRF, "+ "id1," + "R1" )
+    
+  if len(Numerals_Output) == 3 and len(Operators_Output) == 4:
+    if llst[4] in Numerals_Output:
+      h = 2
+      # if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+      print("LDF ," + "R1," + 'id2,')
+      print("MLTF," + "R1," + "R2," + "#"+str(floats[0]))
+      print("MLTF," + "R1," + "#"+str(floats[1]) + "#"+str(floats[1]))
+      print("ADDF," + "R1," + "R1 ," + "R1")
+      print("STRF, "+ "id1," + "R1" )
+  if len(Numerals_Output) == 2 and len(Operators_Output) == 3:
+    if llst[4] in Numerals_Output:
+      h = 2
+      # if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+      print("LDF ," + "R1," + 'id2,')
+      print("MLTF," + "R1," + "R2," + "#"+str(floats[0]))
+      
+      print("MLTF," + "R1," + "#"+str(floats[1]) + "#"+str(floats[1]))
+      print("ADDF," + "R1," + "R1 ," + "R1")
+      print("STRF, "+ "id1," + "R1" )  
+  if len(Numerals_Output) == 1 and len(Operators_Output) == 3:
+    if llst[2] in Numerals_Output: 
+      print("LDF ," + "R2," + 'id2,')
+      print("MLTF," + "R2," + "R2," + "#"+str(floats[0]))
+      print("LDF ," + "R1," + 'id2,')      
+      print("ADDF," + "R1," + "R2 ," + "R1")
+      print("STRF, "+ "id1," + "R1" )       
+    if llst[4] in Numerals_Output:  
+      print("LDF ," + "R2," + 'id2,')
+      print("MLTF," + "R2," + "R2," + "#"+str(floats[0]))
+      print("LDF ," + "R1," + 'id3,')      
+      print("ADDF," + "R1," + "R2 ," + "R1")
+      print("STRF, "+ "id1," + "R1")                    
+  #   if llst[2] in Numerals_Output:
+  #     h = 3
+  #     if llst[3] == '*' or '/' and llst[5] == '+' or '-' and llst[7] == '*' or '/':
+  #       print("t1 ="+ "id" + str(h-1) + Operators_Output[1]  + "#"+str(floats[0]) )
+  #       print("t2 =" +"id" + str(h)+ Operators_Output[3] +"#"+str(floats[0]))
+  #       print("id" + str(h -1) + "="  + "t1" + Operators_Output[2] + "t2")
+                
+  # if len(Numerals_Output) == 1 and len(Operators_Output) == 3:  
+  # if len(Numerals_Output) == 3 and len(Operators_Output) == 4:
+  #   if llst[4] in Numerals_Output:
+  #     h = 2
